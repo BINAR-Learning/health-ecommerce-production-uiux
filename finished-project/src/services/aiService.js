@@ -1,41 +1,47 @@
-import axios from 'axios';
-
-const AI_API_URL = 'http://localhost:5000/api/external/ai';
-
 /**
- * AI Chatbot Service - Google Gemini Integration
- * Mendapatkan rekomendasi produk kesehatan berdasarkan keluhan user
+ * AI Chatbot Service
+ * Service untuk interact dengan Google Gemini AI melalui backend
  */
 
-export const getProductRecommendations = async (userMessage) => {
+import apiClient from './api';
+
+/**
+ * Send message ke AI chatbot dan get response
+ * @param {string} message - Pesan dari user
+ * @param {string} context - Context untuk AI (default: health_product_recommendation)
+ * @returns {Promise} AI response
+ */
+export const sendChatMessage = async (message, context = 'health_product_recommendation') => {
   try {
-    const response = await axios.post(`${AI_API_URL}/chat`, {
-      message: userMessage,
-      context: 'health_product_recommendation'
+    const response = await apiClient.post('/api/external/ai/chat', {
+      message,
+      context
     });
 
     return response.data;
   } catch (error) {
-    console.error('AI recommendation error:', error);
-    throw error;
+    console.error('AI Service Error:', error);
+    throw new Error(
+      error.message || 'Gagal menghubungi AI chatbot. Pastikan backend berjalan dan GEMINI_API_KEY terkonfigurasi.'
+    );
   }
 };
 
 /**
- * Format AI response untuk display
+ * Get product recommendations berdasarkan query
+ * @param {string} query - User query untuk rekomendasi
+ * @returns {Promise} Product recommendations
  */
-export const formatAIResponse = (response) => {
-  if (!response || !response.recommendations) {
-    return {
-      message: 'Maaf, saya tidak bisa memberikan rekomendasi saat ini.',
-      products: []
-    };
+export const getProductRecommendations = async (query) => {
+  try {
+    const response = await sendChatMessage(
+      `Berikan rekomendasi produk kesehatan untuk: ${query}`,
+      'health_product_recommendation'
+    );
+
+    return response;
+  } catch (error) {
+    console.error('Get Recommendations Error:', error);
+    throw error;
   }
-
-  return {
-    message: response.message || 'Berikut rekomendasi produk untuk Anda:',
-    products: response.recommendations || [],
-    confidence: response.confidence || 0.8
-  };
 };
-
