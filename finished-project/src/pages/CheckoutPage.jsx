@@ -14,14 +14,14 @@ function CheckoutPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-4xl">
         <Alert
           message="Keranjang Kosong"
           description="Silakan tambahkan produk ke keranjang terlebih dahulu"
           type="warning"
           showIcon
           action={
-            <Button onClick={() => navigate('/products')}>
+            <Button onClick={() => navigate('/products')} size="large">
               Belanja Sekarang
             </Button>
           }
@@ -87,10 +87,10 @@ function CheckoutPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 md:pt-32 pb-8 sm:pb-10 max-w-4xl">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 md:mb-10 text-gray-800">Checkout</h1>
       
-      <Steps current={currentStep} className="mb-8">
+      <Steps current={currentStep} className="mb-6 sm:mb-8">
         {steps.map((step, idx) => (
           <Steps.Step key={idx} title={step.title} />
         ))}
@@ -103,6 +103,7 @@ function CheckoutPage() {
       {currentStep > 0 && (
         <Button
           className="mt-4"
+          size="large"
           onClick={() => setCurrentStep(0)}
         >
           Kembali
@@ -235,5 +236,5 @@ function PaymentSummary({ cart, cartTotal, shippingInfo, onPayment, loading }) {
   );
 }
 
-export default AIChatbot;
+export default CheckoutPage;
 

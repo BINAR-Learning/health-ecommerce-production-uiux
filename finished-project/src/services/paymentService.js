@@ -16,19 +16,55 @@ import apiClient from './api';
  */
 export const createPayment = async (orderData) => {
   try {
-    const response = await apiClient.post('/api/external/payment/create', orderData);
+    const response = await apiClient.post('/api/external/payment/create', {
+      orderId: orderData.orderId,
+      amount: orderData.total,
+      items: orderData.items.map(item => ({
+        id: item._id || item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity || 1,
+        category: item.category || 'health_product'
+      })),
+      customerName: orderData.customerName,
+      customerEmail: orderData.customerEmail,
+      customerPhone: orderData.customerPhone || '',
+    });
 
-    if (response.data.success && response.data.data.paymentUrl) {
-      return response.data.data;
+    // Handle response
+    if (response.data.success && response.data.data) {
+      return {
+        success: true,
+        paymentUrl: response.data.data.paymentUrl || response.data.data.redirectUrl,
+        token: response.data.data.token,
+      };
     } else {
-      throw new Error('Invalid payment response');
+      // Handle error response from backend
+      const errorMessage = response.data.message || 'Payment creation failed';
+      const errorDetails = response.data.details || '';
+      
+      throw new Error(
+        errorMessage + (errorDetails ? `\n${errorDetails}` : '')
+      );
     }
   } catch (error) {
     console.error('Payment Service Error:', error);
-    throw new Error(
-      error.message || 
-      'Gagal membuat pembayaran. Pastikan backend berjalan dan MIDTRANS keys terkonfigurasi.'
-    );
+    
+    // Enhanced error handling
+    if (error.response) {
+      // Backend returned error
+      const errorData = error.response.data;
+      const errorMessage = errorData?.message || 
+        'Gagal membuat pembayaran. Pastikan backend berjalan dan MIDTRANS_SERVER_KEY terkonfigurasi di .env file.';
+      
+      throw new Error(errorMessage);
+    } else if (error.request) {
+      // Network error
+      throw new Error('Tidak dapat terhubung ke server. Pastikan backend berjalan di http://localhost:5000');
+    } else {
+      // Other errors
+      throw error;
+    }
   }
 };
 

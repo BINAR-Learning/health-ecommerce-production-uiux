@@ -44,26 +44,31 @@ function Navbar() {
   ];
 
   return (
-    <Header className="flex items-center justify-between px-4 md:px-8 bg-white shadow-md">
-      <div className="flex items-center">
-        <Link to="/" className="text-xl font-bold text-blue-600">
-          🏥 Health E-Commerce
+    <Header className="!flex items-center justify-between !px-4 md:!px-6 lg:!px-8 !bg-white !shadow-lg !sticky !top-0 !z-50 !h-16 !leading-none border-b border-gray-100">
+      <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2 text-base sm:text-lg md:text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors no-underline">
+          <span className="text-xl sm:text-2xl">🏥</span>
+          <span className="hidden sm:inline">Health E-Commerce</span>
+          <span className="sm:hidden">Health</span>
         </Link>
       </div>
 
       {/* Desktop Menu */}
-      <div className="hidden md:flex items-center space-x-4">
+      <div className="hidden md:flex items-center gap-4">
         <Menu
           mode="horizontal"
           items={menuItems}
-          className="border-0 bg-transparent"
+          className="border-0 bg-transparent flex-1 min-w-0"
           selectedKeys={[]}
+          style={{ lineHeight: '64px' }}
         />
         
         <Button
           icon={theme === 'dark' ? <SunOutlined /> : <MoonOutlined />}
           onClick={toggleTheme}
           type="text"
+          className="!flex items-center justify-center"
+          size="middle"
         />
       </div>
 

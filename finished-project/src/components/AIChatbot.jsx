@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Modal, Input, Button, Card, Avatar, Spin, message } from 'antd';
-import { RobotOutlined, UserOutlined, SendOutlined } from '@ant-design/icons';
+import { Modal, Input, Button, Card, Avatar, Spin, message, Tag } from 'antd';
+import { RobotOutlined, UserOutlined, SendOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { useCart } from '../context/CartContext';
 import { getProductRecommendations, formatAIResponse } from '../services/aiService';
 
 const { TextArea } = Input;
 
 function AIChatbot({ visible, onClose }) {
+  const { addToCart } = useCart();
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -14,6 +16,28 @@ function AIChatbot({ visible, onClose }) {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const handleAddToCart = (product) => {
+    // Ensure product has _id for cart matching
+    if (!product._id) {
+      console.error('Product missing _id:', product);
+      message.error('Error: Produk tidak valid. Silakan coba lagi.');
+      return;
+    }
+
+    // Log untuk debugging
+    console.log('Adding to cart:', {
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      hasId: !!product._id,
+      hasName: !!product.name,
+      hasPrice: !!product.price
+    });
+
+    addToCart(product);
+    message.success(`✅ ${product.name} ditambahkan ke keranjang!`);
+  };
 
   const handleSend = async () => {
     if (!inputMessage.trim()) return;
@@ -27,7 +51,21 @@ function AIChatbot({ visible, onClose }) {
     try {
       // Get AI recommendation
       const response = await getProductRecommendations(inputMessage);
-      const formatted = formatAIResponse(response);
+      const formatted = await formatAIResponse(response);
+
+      // Debug: Log formatted products
+      console.log('AI Response formatted:', {
+        message: formatted.message,
+        productsCount: formatted.products?.length,
+        products: formatted.products?.map(p => ({
+          _id: p._id,
+          name: p.name,
+          price: p.price,
+          hasId: !!p._id,
+          hasName: !!p.name,
+          hasPrice: !!p.price
+        }))
+      });
 
       // Add AI response
       const aiMsg = {
@@ -52,17 +90,18 @@ function AIChatbot({ visible, onClose }) {
     <Modal
       title={
         <div className="flex items-center gap-2">
-          <RobotOutlined className="text-2xl text-blue-500" />
-          <span>AI Assistant - Rekomendasi Produk</span>
+          <RobotOutlined className="text-xl sm:text-2xl text-blue-500" />
+          <span className="text-sm sm:text-base">AI Assistant - Rekomendasi Produk</span>
         </div>
       }
       open={visible}
       onCancel={onClose}
       footer={null}
       width={600}
+      className="!max-w-[calc(100vw-32px)]"
     >
       {/* Chat Messages */}
-      <div className="h-96 overflow-y-auto mb-4 p-4 bg-gray-50 rounded">
+      <div className="h-64 sm:h-96 overflow-y-auto mb-4 p-3 sm:p-4 bg-gray-50 rounded">
         {messages.map((msg, idx) => (
           <div
             key={idx}
@@ -72,20 +111,78 @@ function AIChatbot({ visible, onClose }) {
               <Avatar
                 icon={msg.role === 'user' ? <UserOutlined /> : <RobotOutlined />}
                 className={msg.role === 'user' ? 'bg-blue-500' : 'bg-green-500'}
+                size={msg.role === 'user' ? 'default' : 'large'}
               />
-              <Card size="small" className="shadow-sm">
-                <p className="mb-0">{msg.content}</p>
+              <div className="flex-1">
+                <Card size="small" className="shadow-sm">
+                  <p className="mb-0 text-sm sm:text-base whitespace-pre-line">{msg.content}</p>
+                </Card>
+                
+                {/* Product Cards - Clickable with Add to Cart */}
                 {msg.products && msg.products.length > 0 && (
-                  <div className="mt-2 pt-2 border-t">
-                    <p className="text-sm font-semibold mb-1">Produk Direkomendasikan:</p>
+                  <div className="mt-3 space-y-2">
+                    <p className="text-xs font-semibold text-gray-500 mb-2">
+                      💊 Produk yang Direkomendasikan:
+                    </p>
                     {msg.products.map((product, i) => (
-                      <div key={i} className="text-sm text-gray-600">
-                        • {product.name} - Rp {product.price?.toLocaleString('id-ID')}
-                      </div>
+                      <Card
+                        key={i}
+                        size="small"
+                        className="hover:shadow-md transition-shadow cursor-pointer border-blue-200 bg-gradient-to-r from-blue-50 to-white"
+                        bodyStyle={{ padding: '12px' }}
+                      >
+                        <div className="flex items-start gap-3">
+                          {/* Product Image */}
+                          <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
+                            <img
+                              src={product.imageUrl || '/placeholder.webp'}
+                              alt={product.name}
+                              className="w-full h-full object-contain"
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = '/placeholder.webp';
+                              }}
+                            />
+                          </div>
+
+                          {/* Product Info */}
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-sm text-gray-800 mb-1 truncate">
+                              {product.name}
+                            </h4>
+                            {product.category && (
+                              <Tag color="blue" className="text-xs mb-1">
+                                {product.category}
+                              </Tag>
+                            )}
+                            <p className="text-xs text-blue-600 font-bold mb-2">
+                              Rp {product.price?.toLocaleString('id-ID')}
+                            </p>
+                            
+                            {/* Add to Cart Button */}
+                            <Button
+                              type="primary"
+                              size="small"
+                              icon={<ShoppingCartOutlined />}
+                              onClick={() => handleAddToCart(product)}
+                              className="w-full sm:w-auto"
+                            >
+                              <span className="text-xs">Tambah ke Keranjang</span>
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Description */}
+                        {product.description && (
+                          <p className="text-xs text-gray-600 mt-2 line-clamp-2">
+                            {product.description}
+                          </p>
+                        )}
+                      </Card>
                     ))}
                   </div>
                 )}
-              </Card>
+              </div>
             </div>
           </div>
         ))}

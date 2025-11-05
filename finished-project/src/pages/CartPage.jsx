@@ -25,9 +25,13 @@ function CartPage() {
       render: (name, record) => (
         <div className="flex items-center gap-4">
           <img
-            src={record.imageUrl || 'https://via.placeholder.com/80'}
+            src={record.imageUrl || '/placeholder.webp'}
             alt={name}
-            className="w-20 h-20 object-cover rounded"
+            className="w-20 h-20 object-cover rounded bg-gray-100"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = '/placeholder.webp';
+            }}
           />
           <div>
             <Link
@@ -91,17 +95,17 @@ function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={
-            <span className="text-lg text-gray-500">
+            <span className="text-base sm:text-lg text-gray-500">
               Keranjang Anda kosong
             </span>
           }
         >
           <Link to="/products">
-            <Button type="primary" icon={<ShoppingOutlined />}>
+            <Button type="primary" icon={<ShoppingOutlined />} size="large">
               Mulai Belanja
             </Button>
           </Link>
@@ -111,8 +115,8 @@ function CartPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Keranjang Belanja</h1>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 md:pt-32 pb-8 sm:pb-10">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 md:mb-10 text-gray-800">Keranjang Belanja</h1>
 
       <Table
         columns={columns}
@@ -120,19 +124,20 @@ function CartPage() {
         rowKey="_id"
         pagination={false}
         scroll={{ x: 800 }}
+        className="[&_.ant-table]:text-sm sm:[&_.ant-table]:text-base"
       />
 
       {/* Summary */}
-      <div className="mt-8 flex justify-end">
-        <div className="bg-gray-50 p-6 rounded-lg w-full md:w-96">
-          <div className="flex justify-between mb-4">
-            <span className="text-lg">Total Items:</span>
-            <span className="font-semibold">{cart.length} produk</span>
+      <div className="mt-6 sm:mt-8 flex justify-end">
+        <div className="bg-gray-50 p-4 sm:p-6 rounded-lg w-full md:w-96">
+          <div className="flex justify-between mb-3 sm:mb-4">
+            <span className="text-base sm:text-lg">Total Items:</span>
+            <span className="font-semibold text-sm sm:text-base">{cart.length} produk</span>
           </div>
           
-          <div className="flex justify-between mb-6 pb-4 border-b">
-            <span className="text-xl font-bold">Total:</span>
-            <span className="text-2xl font-bold text-blue-600">
+          <div className="flex justify-between mb-4 sm:mb-6 pb-3 sm:pb-4 border-b">
+            <span className="text-lg sm:text-xl font-bold">Total:</span>
+            <span className="text-xl sm:text-2xl font-bold text-blue-600">
               Rp {getCartTotal().toLocaleString('id-ID')}
             </span>
           </div>
@@ -140,7 +145,7 @@ function CartPage() {
           <Button
             type="primary"
             size="large"
-            className="w-full"
+            className="w-full !h-auto !py-3"
             onClick={() => navigate('/checkout')}
           >
             Lanjut ke Checkout

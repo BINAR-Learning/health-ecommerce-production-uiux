@@ -47,38 +47,40 @@ function ProductDetailPage() {
   if (!product) return null;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 md:pt-32 pb-8 sm:pb-10">
       <Button
         icon={<ArrowLeftOutlined />}
         onClick={() => navigate('/products')}
-        className="mb-6"
+        className="mb-4 sm:mb-6"
+        size="middle"
       >
         Kembali
       </Button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
         {/* Product Image */}
-        <div>
+        <div className="bg-gray-100 rounded-lg overflow-hidden">
           <Image
-            src={product.imageUrl || 'https://via.placeholder.com/600x400?text=Product'}
+            src={product.imageUrl || '/placeholder.webp'}
             alt={product.name}
             className="rounded-lg"
+            fallback="/placeholder.webp"
           />
         </div>
 
         {/* Product Details */}
         <div>
-          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">{product.name}</h1>
           
-          <p className="text-gray-600 mb-6">{product.description}</p>
+          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">{product.description}</p>
 
-          <div className="mb-6">
-            <span className="text-3xl font-bold text-blue-600">
+          <div className="mb-4 sm:mb-6">
+            <span className="text-2xl sm:text-3xl font-bold text-blue-600">
               Rp {product.price.toLocaleString('id-ID')}
             </span>
           </div>
 
-          <Descriptions bordered column={1} className="mb-6">
+          <Descriptions bordered column={1} className="mb-4 sm:mb-6 text-sm sm:text-base">
             <Descriptions.Item label="Kategori">
               {product.category}
             </Descriptions.Item>
@@ -107,7 +109,7 @@ function ProductDetailPage() {
             icon={<ShoppingCartOutlined />}
             onClick={handleAddToCart}
             disabled={product.stock <= 0}
-            className="w-full md:w-auto"
+            className="w-full sm:w-auto !h-auto !py-3 !px-6"
           >
             {product.stock > 0 ? 'Tambah ke Keranjang' : 'Stok Habis'}
           </Button>

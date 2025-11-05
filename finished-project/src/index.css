@@ -3,36 +3,54 @@
 @tailwind utilities;
 
 /* CSS Variables untuk Dark Mode */
-:root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f3f4f6;
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --border-color: #e5e7eb;
+@layer base {
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f3f4f6;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+  }
+
+  [data-theme="dark"] {
+    --bg-primary: #1f2937;
+    --bg-secondary: #111827;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --border-color: #374151;
+  }
+
+  body {
+    @apply m-0 p-0 overflow-x-hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
 }
 
-[data-theme="dark"] {
-  --bg-primary: #1f2937;
-  --bg-secondary: #111827;
-  --text-primary: #f9fafb;
-  --text-secondary: #d1d5db;
-  --border-color: #374151;
-}
+/* Ant Design Layout overrides */
+@layer components {
+  .ant-layout {
+    @apply min-h-screen flex flex-col;
+  }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg-secondary);
-  color: var(--text-primary);
-}
+  .ant-layout-content {
+    @apply flex-1 w-full;
+  }
 
-/* Smooth transitions */
-* {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  /* Fix Ant Design button with Tailwind classes */
+  .ant-btn {
+    @apply transition-all duration-200;
+  }
+  
+  /* Responsive Container */
+  .container-responsive {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
 }
 
 /* Loading skeleton animation */
@@ -66,5 +84,114 @@ input:focus-visible {
 .dark .ant-card-meta-title,
 .dark .ant-card-meta-description {
   color: var(--text-primary);
+}
+
+/* Utility classes */
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Responsive font smoothing */
+@media screen and (max-width: 640px) {
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* Fix Ant Design responsive issues */
+@media screen and (max-width: 768px) {
+  .ant-steps-item-title {
+    font-size: 14px !important;
+  }
+  
+  .ant-modal {
+    max-width: calc(100vw - 32px) !important;
+    margin: 16px auto !important;
+  }
+  
+  .ant-table-wrapper {
+    overflow-x: auto;
+  }
+}
+
+/* Desktop-specific improvements */
+@media screen and (min-width: 1024px) {
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Better card shadows */
+  .ant-card {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  
+  .ant-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Better button hover effects */
+  .ant-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+  }
+  
+  /* Better spacing for headings */
+  h1, h2, h3 {
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Ensure images don't overflow */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Better focus states */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #1890ff;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Clean up Ant Design overrides */
+.ant-layout-header {
+  padding: 0 !important;
+}
+
+.ant-menu-horizontal {
+  border-bottom: none !important;
+}
+
+.ant-menu-item {
+  margin: 0 8px !important;
+}
+
+/* Product card improvements */
+.ant-card-cover {
+  overflow: hidden;
+}
+
+.ant-card-cover img {
+  transition: transform 0.3s ease;
+}
+
+.ant-card:hover .ant-card-cover img {
+  transform: scale(1.05);
 }
 
