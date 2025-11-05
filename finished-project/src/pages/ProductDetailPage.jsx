@@ -1,14 +1,17 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Button, Descriptions, Image, message, Spin } from 'antd';
-import { ShoppingCartOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, ArrowLeftOutlined, LoginOutlined } from '@ant-design/icons';
 import apiClient from '../services/api';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { addToCart } = useCart();
+  const { isLoggedIn } = useAuth();
 
   const { data: product, isLoading, error } = useQuery({
     queryKey: ['product', id],
@@ -19,6 +22,22 @@ function ProductDetailPage() {
   });
 
   const handleAddToCart = () => {
+    // Check if user is logged in
+    if (!isLoggedIn) {
+      message.warning({
+        content: 'Silakan login terlebih dahulu untuk menambahkan produk ke keranjang',
+        duration: 3,
+        icon: <LoginOutlined />,
+        onClick: () => navigate('/login')
+      });
+      
+      // Redirect to login after a short delay
+      setTimeout(() => {
+        navigate('/login', { state: { from: location } });
+      }, 1500);
+      return;
+    }
+
     addToCart(product);
     message.success(`${product.name} ditambahkan ke keranjang!`);
   };

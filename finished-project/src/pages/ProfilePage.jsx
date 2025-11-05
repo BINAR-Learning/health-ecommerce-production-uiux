@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Card, Form, Input, Button, message, Avatar, Divider, Tag } from 'antd';
-import { UserOutlined, MailOutlined, SaveOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { Card, Form, Input, Button, message, Avatar, Divider, Tag, Upload } from 'antd';
+import { UserOutlined, MailOutlined, SaveOutlined, ShoppingOutlined, UploadOutlined, CameraOutlined } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
 import { getProfile } from '../services/authService';
+import apiClient from '../services/api';
 
 function ProfilePage() {
   const { user, updateUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState(user?.profilePhoto || null);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -17,8 +20,37 @@ function ProfilePage() {
         name: user.name,
         email: user.email,
       });
+      setPhotoUrl(user.profilePhoto || null);
     }
   }, [user, form]);
+
+  const handlePhotoUpload = async (file) => {
+    setUploadingPhoto(true);
+    
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await apiClient.post('/api/upload/profile', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.data.success) {
+        setPhotoUrl(response.data.imageUrl);
+        updateUser({ ...user, profilePhoto: response.data.imageUrl });
+        message.success('Profile photo berhasil diupdate!');
+      }
+    } catch (error) {
+      message.error('Gagal upload foto profile');
+      console.error('Upload error:', error);
+    } finally {
+      setUploadingPhoto(false);
+    }
+
+    return false; // Prevent default upload behavior
+  };
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -68,11 +100,28 @@ function ProfilePage() {
         {/* Profile Summary Card */}
         <Card className="lg:col-span-1">
           <div className="text-center">
-            <Avatar 
-              size={100} 
-              icon={<UserOutlined />} 
-              className="mb-4 bg-blue-500"
-            />
+            <div className="relative inline-block mb-4">
+              <Avatar 
+                size={100} 
+                src={photoUrl}
+                icon={!photoUrl && <UserOutlined />} 
+                className="bg-blue-500"
+              />
+              <Upload
+                showUploadList={false}
+                beforeUpload={handlePhotoUpload}
+                accept="image/*"
+              >
+                <Button
+                  icon={<CameraOutlined />}
+                  shape="circle"
+                  size="small"
+                  className="absolute bottom-0 right-0"
+                  loading={uploadingPhoto}
+                  title="Change photo"
+                />
+              </Upload>
+            </div>
             <h2 className="text-xl font-bold text-gray-800 mb-2">
               {user?.name || 'User'}
             </h2>

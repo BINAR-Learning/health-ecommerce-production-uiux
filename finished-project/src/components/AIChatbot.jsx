@@ -1,13 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Modal, Input, Button, Card, Avatar, Spin, message, Tag } from 'antd';
-import { RobotOutlined, UserOutlined, SendOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { RobotOutlined, UserOutlined, SendOutlined, ShoppingCartOutlined, LoginOutlined } from '@ant-design/icons';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { getProductRecommendations, formatAIResponse } from '../services/aiService';
 
 const { TextArea } = Input;
 
 function AIChatbot({ visible, onClose }) {
+  const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { isLoggedIn } = useAuth();
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -18,6 +22,22 @@ function AIChatbot({ visible, onClose }) {
   const [loading, setLoading] = useState(false);
 
   const handleAddToCart = (product) => {
+    // Check if user is logged in first
+    if (!isLoggedIn) {
+      onClose(); // Close chatbot
+      message.warning({
+        content: 'Silakan login terlebih dahulu untuk menambahkan produk ke keranjang',
+        duration: 3,
+        icon: <LoginOutlined />,
+      });
+      
+      // Redirect to login
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
+      return;
+    }
+
     // Ensure product has _id for cart matching
     if (!product._id) {
       console.error('Product missing _id:', product);

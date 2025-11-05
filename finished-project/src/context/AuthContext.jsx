@@ -33,12 +33,21 @@ export function AuthProvider({ children }) {
   const login = (userData, token) => {
     setUser(userData);
     setIsLoggedIn(true);
+    
+    // Trigger cart refresh after login
+    window.dispatchEvent(new Event('auth-changed'));
   };
 
   const logout = () => {
     logoutService();
     setUser(null);
     setIsLoggedIn(false);
+    
+    // Clear cart on logout
+    localStorage.removeItem('cart');
+    
+    // Trigger cart refresh after logout
+    window.dispatchEvent(new Event('auth-changed'));
   };
 
   const updateUser = (userData) => {
