@@ -7,10 +7,13 @@ import { createPayment } from '../services/paymentService';
 
 function CheckoutPage() {
   const navigate = useNavigate();
-  const { cart, cartTotal, clearCart } = useCart();
+  const { cart, getCartTotal, clearCart } = useCart();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [shippingInfo, setShippingInfo] = useState(null);
+  
+  // Calculate cart total safely
+  const cartTotal = getCartTotal() || 0;
 
   if (cart.length === 0) {
     return (
@@ -54,11 +57,29 @@ function CheckoutPage() {
     setLoading(true);
 
     try {
+      // Validate data sebelum payment
+      if (!shippingInfo) {
+        message.error('Silakan lengkapi informasi pengiriman terlebih dahulu');
+        setLoading(false);
+        return;
+      }
+
+      const safeCartTotal = cartTotal || 0;
+      if (safeCartTotal <= 0) {
+        message.error('Total pembayaran tidak valid');
+        setLoading(false);
+        return;
+      }
+
       // Create payment via Midtrans
       const paymentData = {
         orderId: `ORDER-${Date.now()}`,
-        total: cartTotal,
-        items: cart,
+        total: safeCartTotal,
+        items: cart.map(item => ({
+          ...item,
+          price: item.price || 0,
+          quantity: item.quantity || 1
+        })),
         customerName: shippingInfo.name,
         customerEmail: shippingInfo.email,
         customerPhone: shippingInfo.phone,
@@ -175,7 +196,18 @@ function ShippingForm({ onComplete }) {
 // Payment Summary Component
 function PaymentSummary({ cart, cartTotal, shippingInfo, onPayment, loading }) {
   const shippingCost = 15000; // Fixed shipping cost
-  const total = cartTotal + shippingCost;
+  
+  // Safe defaults untuk prevent undefined errors
+  const safeCartTotal = cartTotal || 0;
+  const total = safeCartTotal + shippingCost;
+  
+  // Helper function untuk format currency dengan null check
+  const formatCurrency = (value) => {
+    if (value === null || value === undefined || isNaN(value)) {
+      return '0';
+    }
+    return Number(value).toLocaleString('id-ID');
+  };
 
   return (
     <div>
@@ -193,27 +225,33 @@ function PaymentSummary({ cart, cartTotal, shippingInfo, onPayment, loading }) {
       {/* Order Items */}
       <div className="mb-4">
         <h4 className="font-semibold mb-2">Produk ({cart.length} items):</h4>
-        {cart.map(item => (
-          <div key={item._id} className="flex justify-between mb-2 text-sm">
-            <span>{item.name} x{item.quantity}</span>
-            <span>Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
-          </div>
-        ))}
+        {cart.map(item => {
+          const itemPrice = item.price || 0;
+          const itemQuantity = item.quantity || 1;
+          const subtotal = itemPrice * itemQuantity;
+          
+          return (
+            <div key={item._id} className="flex justify-between mb-2 text-sm">
+              <span>{item.name || 'Produk'} x{itemQuantity}</span>
+              <span>Rp {formatCurrency(subtotal)}</span>
+            </div>
+          );
+        })}
       </div>
 
       {/* Price Summary */}
       <div className="border-t pt-4">
         <div className="flex justify-between mb-2">
           <span>Subtotal:</span>
-          <span>Rp {cartTotal.toLocaleString('id-ID')}</span>
+          <span>Rp {formatCurrency(safeCartTotal)}</span>
         </div>
         <div className="flex justify-between mb-2">
           <span>Ongkir:</span>
-          <span>Rp {shippingCost.toLocaleString('id-ID')}</span>
+          <span>Rp {formatCurrency(shippingCost)}</span>
         </div>
         <div className="flex justify-between text-xl font-bold text-blue-600 border-t pt-2">
           <span>Total:</span>
-          <span>Rp {total.toLocaleString('id-ID')}</span>
+          <span>Rp {formatCurrency(total)}</span>
         </div>
       </div>
 

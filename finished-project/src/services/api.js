@@ -1,14 +1,25 @@
 /**
- * API Client Configuration
- * Centralized axios instance untuk semua API calls
+ * HTTP Client Configuration (Frontend)
+ * 
+ * CATATAN PENTING:
+ * - Ini BUKAN API Server, ini adalah HTTP Client untuk call backend API
+ * - React/Frontend TIDAK membuat API, hanya melakukan HTTP requests
+ * - Semua API endpoints ada di backend (Node.js/Express) di folder:
+ *   health-ecommerce-external-integration/finished-project/
+ * 
+ * Tujuan:
+ * - Centralized axios instance untuk semua HTTP calls ke backend
+ * - Handle authentication (Bearer token)
+ * - Handle errors secara global
  */
 
 import axios from 'axios';
 
-// Base URL dari environment variable atau fallback ke localhost
+// Base URL backend API (BUKAN frontend!)
+// Backend berjalan di: http://localhost:5000
 const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Create axios instance dengan config
+// Create HTTP client instance (untuk call backend API)
 const apiClient = axios.create({
   baseURL,
   timeout: 15000, // 15 seconds timeout
@@ -50,7 +61,12 @@ apiClient.interceptors.response.use(
     if (status === 401) {
       // Unauthorized - clear token dan redirect ke login
       localStorage.removeItem('auth_token');
-      // window.location.href = '/login'; // Uncomment jika ada login page
+      localStorage.removeItem('user_data');
+      
+      // Redirect ke login page
+      if (!window.location.pathname.includes('/login')) {
+        window.location.href = '/login';
+      }
     }
 
     return Promise.reject(data || error);

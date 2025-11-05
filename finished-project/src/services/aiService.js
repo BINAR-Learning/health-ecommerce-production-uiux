@@ -1,6 +1,13 @@
 /**
- * AI Chatbot Service
- * Service untuk interact dengan Google Gemini AI melalui backend
+ * AI Chatbot Service (Frontend)
+ * 
+ * CATATAN: Ini adalah Service Layer untuk call backend API, BUKAN membuat API!
+ * 
+ * Flow:
+ * Frontend (React) → HTTP Request → Backend API (Node.js) → Google Gemini AI
+ * 
+ * Backend API endpoint: POST /api/external/ai/chat
+ * (ada di: health-ecommerce-external-integration/finished-project/routes/externalRoutes.js)
  */
 
 import apiClient from './api';

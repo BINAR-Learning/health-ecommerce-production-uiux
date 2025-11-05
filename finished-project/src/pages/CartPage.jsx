@@ -49,11 +49,14 @@ function CartPage() {
       title: 'Harga',
       dataIndex: 'price',
       key: 'price',
-      render: (price) => (
-        <span className="font-semibold">
-          Rp {price.toLocaleString('id-ID')}
-        </span>
-      ),
+      render: (price) => {
+        const safePrice = price || 0;
+        return (
+          <span className="font-semibold">
+            Rp {Number(safePrice).toLocaleString('id-ID')}
+          </span>
+        );
+      },
     },
     {
       title: 'Jumlah',
@@ -71,11 +74,16 @@ function CartPage() {
     {
       title: 'Subtotal',
       key: 'subtotal',
-      render: (_, record) => (
-        <span className="font-bold text-blue-600">
-          Rp {(record.price * record.quantity).toLocaleString('id-ID')}
-        </span>
-      ),
+      render: (_, record) => {
+        const price = record.price || 0;
+        const quantity = record.quantity || 1;
+        const subtotal = price * quantity;
+        return (
+          <span className="font-bold text-blue-600">
+            Rp {Number(subtotal).toLocaleString('id-ID')}
+          </span>
+        );
+      },
     },
     {
       title: 'Aksi',
@@ -138,7 +146,7 @@ function CartPage() {
           <div className="flex justify-between mb-4 sm:mb-6 pb-3 sm:pb-4 border-b">
             <span className="text-lg sm:text-xl font-bold">Total:</span>
             <span className="text-xl sm:text-2xl font-bold text-blue-600">
-              Rp {getCartTotal().toLocaleString('id-ID')}
+              Rp {Number(getCartTotal() || 0).toLocaleString('id-ID')}
             </span>
           </div>
 

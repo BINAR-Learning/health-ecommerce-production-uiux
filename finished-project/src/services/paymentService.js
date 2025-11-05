@@ -1,6 +1,13 @@
 /**
- * Payment Service
- * Service untuk integrate dengan Midtrans payment gateway melalui backend
+ * Payment Service (Frontend)
+ * 
+ * CATATAN: Ini adalah Service Layer untuk call backend API, BUKAN membuat API!
+ * 
+ * Flow:
+ * Frontend (React) → HTTP Request → Backend API (Node.js) → Midtrans API
+ * 
+ * Backend API endpoint: POST /api/external/payment/create
+ * (ada di: health-ecommerce-external-integration/finished-project/routes/externalRoutes.js)
  */
 
 import apiClient from './api';
@@ -16,20 +23,42 @@ import apiClient from './api';
  */
 export const createPayment = async (orderData) => {
   try {
-    const response = await apiClient.post('/api/external/payment/create', {
+    // Validate input data
+    if (!orderData.orderId) {
+      throw new Error('Order ID is required');
+    }
+
+    if (!orderData.items || !Array.isArray(orderData.items) || orderData.items.length === 0) {
+      throw new Error('Items array is required and cannot be empty');
+    }
+
+    // Prepare request payload
+    const payload = {
       orderId: orderData.orderId,
-      amount: orderData.total,
+      amount: orderData.total || orderData.amount, // Support both total and amount
       items: orderData.items.map(item => ({
         id: item._id || item.id,
         name: item.name,
-        price: item.price,
+        price: typeof item.price === 'number' ? item.price : parseInt(item.price),
         quantity: item.quantity || 1,
         category: item.category || 'health_product'
       })),
       customerName: orderData.customerName,
       customerEmail: orderData.customerEmail,
       customerPhone: orderData.customerPhone || '',
+    };
+
+    // Log request for debugging
+    console.log('Creating payment with payload:', {
+      orderId: payload.orderId,
+      amount: payload.amount,
+      itemsCount: payload.items.length,
+      items: payload.items.map(i => ({ name: i.name, price: i.price, quantity: i.quantity })),
+      customerName: payload.customerName,
+      customerEmail: payload.customerEmail
     });
+
+    const response = await apiClient.post('/api/external/payment/create', payload);
 
     // Handle response
     if (response.data.success && response.data.data) {

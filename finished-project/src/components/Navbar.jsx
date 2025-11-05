@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Layout, Menu, Badge, Button, Drawer } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { Layout, Menu, Badge, Button, Drawer, Dropdown, Avatar, message } from 'antd';
 import {
   ShoppingCartOutlined,
   HomeOutlined,
@@ -8,18 +8,50 @@ import {
   MenuOutlined,
   SunOutlined,
   MoonOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  LoginOutlined,
 } from '@ant-design/icons';
 import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 const { Header } = Layout;
 
 function Navbar() {
+  const navigate = useNavigate();
   const [drawerVisible, setDrawerVisible] = useState(false);
   const { cart } = useCart();
   const { theme, toggleTheme } = useTheme();
+  const { user, isLoggedIn, logout } = useAuth();
 
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
+
+  const handleLogout = () => {
+    logout();
+    message.success('Logout berhasil');
+    navigate('/');
+  };
+
+  // User dropdown menu
+  const userMenuItems = [
+    {
+      key: 'profile',
+      icon: <UserOutlined />,
+      label: 'Profile',
+      onClick: () => navigate('/profile'),
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: 'Logout',
+      onClick: handleLogout,
+      danger: true,
+    },
+  ];
 
   const menuItems = [
     {
@@ -70,6 +102,24 @@ function Navbar() {
           className="!flex items-center justify-center"
           size="middle"
         />
+
+        {/* User Menu atau Login Button */}
+        {isLoggedIn ? (
+          <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
+            <Button type="text" className="!flex items-center gap-2">
+              <Avatar size="small" icon={<UserOutlined />} className="bg-blue-500" />
+              <span className="hidden lg:inline">{user?.name}</span>
+            </Button>
+          </Dropdown>
+        ) : (
+          <Button 
+            type="primary" 
+            icon={<LoginOutlined />}
+            onClick={() => navigate('/login')}
+          >
+            Login
+          </Button>
+        )}
       </div>
 
       {/* Mobile Menu Button */}
@@ -99,6 +149,38 @@ function Navbar() {
           items={menuItems}
           onClick={() => setDrawerVisible(false)}
         />
+
+        {/* User Section in Mobile Drawer */}
+        {isLoggedIn ? (
+          <div className="mt-4 pt-4 border-t">
+            <div className="flex items-center gap-3 px-4 py-3 bg-blue-50 rounded-lg mb-3">
+              <Avatar icon={<UserOutlined />} className="bg-blue-500" />
+              <div>
+                <div className="font-semibold text-gray-800">{user?.name}</div>
+                <div className="text-xs text-gray-500">{user?.email}</div>
+              </div>
+            </div>
+            <Menu
+              mode="vertical"
+              items={userMenuItems}
+              onClick={() => setDrawerVisible(false)}
+            />
+          </div>
+        ) : (
+          <div className="mt-4 pt-4 border-t px-4">
+            <Button 
+              type="primary" 
+              icon={<LoginOutlined />}
+              onClick={() => {
+                setDrawerVisible(false);
+                navigate('/login');
+              }}
+              block
+            >
+              Login
+            </Button>
+          </div>
+        )}
       </Drawer>
     </Header>
   );
