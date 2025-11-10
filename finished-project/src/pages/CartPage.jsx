@@ -25,7 +25,7 @@ function CartPage() {
       render: (name, record) => (
         <div className="flex items-center gap-4">
           <img
-            src={record.imageUrl || '/placeholder.webp'}
+            src={record.image || record.imageUrl || '/placeholder.webp'}
             alt={name}
             className="w-20 h-20 object-cover rounded bg-gray-100"
             onError={(e) => {

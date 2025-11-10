@@ -155,7 +155,7 @@ function AIChatbot({ visible, onClose }) {
                           {/* Product Image */}
                           <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
                             <img
-                              src={product.imageUrl || '/placeholder.webp'}
+                              src={product.image || product.imageUrl || '/placeholder.webp'}
                               alt={product.name}
                               className="w-full h-full object-contain"
                               onError={(e) => {

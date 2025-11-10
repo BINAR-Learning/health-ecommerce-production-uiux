@@ -80,7 +80,7 @@ function ProductDetailPage() {
         {/* Product Image */}
         <div className="bg-gray-100 rounded-lg overflow-hidden">
           <Image
-            src={product.imageUrl || '/placeholder.webp'}
+            src={product.image || '/placeholder.webp'}
             alt={product.name}
             className="rounded-lg"
             fallback="/placeholder.webp"

@@ -114,6 +114,36 @@ export const isAuthenticated = () => {
 };
 
 /**
+ * Update user profile
+ * @param {FormData} formData - Form data dengan fields: name, phone, address, password (optional), image (optional)
+ * @returns {Promise} Updated user data
+ */
+export const updateProfile = async (formData) => {
+  try {
+    const response = await apiClient.put('/api/auth/profile', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    
+    if (response.data.success && response.data.data) {
+      // Update user data in localStorage
+      localStorage.setItem('user_data', JSON.stringify(response.data.data));
+      return response.data.data;
+    }
+    
+    throw new Error(response.data.message || 'Update profile gagal');
+  } catch (error) {
+    console.error('Update Profile Error:', error);
+    throw new Error(
+      error.response?.data?.message || 
+      error.message || 
+      'Update profile gagal. Silakan coba lagi.'
+    );
+  }
+};
+
+/**
  * Get current user from localStorage
  * @returns {Object|null} User data or null
  */

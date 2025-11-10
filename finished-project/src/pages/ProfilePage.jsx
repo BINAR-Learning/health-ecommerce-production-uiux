@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Card, Form, Input, Button, message, Avatar, Divider, Tag, Upload } from 'antd';
-import { UserOutlined, MailOutlined, SaveOutlined, ShoppingOutlined, UploadOutlined, CameraOutlined } from '@ant-design/icons';
+import { UserOutlined, MailOutlined, SaveOutlined, ShoppingOutlined, UploadOutlined, CameraOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
-import { getProfile } from '../services/authService';
-import apiClient from '../services/api';
+import { getProfile, updateProfile } from '../services/authService';
 
 function ProfilePage() {
   const { user, updateUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoUrl, setPhotoUrl] = useState(user?.profilePhoto || null);
+  const [imageFile, setImageFile] = useState(null);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -19,36 +18,23 @@ function ProfilePage() {
       form.setFieldsValue({
         name: user.name,
         email: user.email,
+        phone: user.phone || '',
+        address: user.address || '',
       });
       setPhotoUrl(user.profilePhoto || null);
     }
   }, [user, form]);
 
-  const handlePhotoUpload = async (file) => {
-    setUploadingPhoto(true);
-    
-    const formData = new FormData();
-    formData.append('image', file);
-
-    try {
-      const response = await apiClient.post('/api/upload/profile', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      if (response.data.success) {
-        setPhotoUrl(response.data.imageUrl);
-        updateUser({ ...user, profilePhoto: response.data.imageUrl });
-        message.success('Profile photo berhasil diupdate!');
-      }
-    } catch (error) {
-      message.error('Gagal upload foto profile');
-      console.error('Upload error:', error);
-    } finally {
-      setUploadingPhoto(false);
+  const handleImageChange = (info) => {
+    if (info.file) {
+      // Preview image
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPhotoUrl(e.target.result);
+      };
+      reader.readAsDataURL(info.file.originFileObj);
+      setImageFile(info.file.originFileObj);
     }
-
     return false; // Prevent default upload behavior
   };
 
@@ -73,18 +59,30 @@ function ProfilePage() {
     setLoading(true);
 
     try {
-      // TODO: Call update profile API when available
-      // For now, just update local storage
-      const updatedUser = {
-        ...user,
-        name: values.name,
-        // Email biasanya tidak bisa diubah atau perlu verifikasi
-      };
+      // Create FormData for multipart/form-data
+      const formData = new FormData();
+      
+      if (values.name) formData.append('name', values.name);
+      if (values.phone) formData.append('phone', values.phone);
+      if (values.address) formData.append('address', values.address);
+      if (values.password) formData.append('password', values.password);
+      
+      // Add image if selected
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
 
+      // Call update profile API
+      const updatedUser = await updateProfile(formData);
+      
       updateUser(updatedUser);
+      setPhotoUrl(updatedUser.profilePhoto || null);
+      setImageFile(null); // Reset image file after successful upload
+      
       message.success('Profile berhasil diupdate!');
     } catch (error) {
-      message.error('Gagal update profile');
+      message.error(error.message || 'Gagal update profile');
+      console.error('Update profile error:', error);
     } finally {
       setLoading(false);
     }
@@ -109,7 +107,7 @@ function ProfilePage() {
               />
               <Upload
                 showUploadList={false}
-                beforeUpload={handlePhotoUpload}
+                beforeUpload={handleImageChange}
                 accept="image/*"
               >
                 <Button
@@ -117,7 +115,6 @@ function ProfilePage() {
                   shape="circle"
                   size="small"
                   className="absolute bottom-0 right-0"
-                  loading={uploadingPhoto}
                   title="Change photo"
                 />
               </Upload>
@@ -191,6 +188,47 @@ function ProfilePage() {
               />
             </Form.Item>
 
+            <Form.Item
+              label="Nomor Telepon"
+              name="phone"
+            >
+              <Input 
+                prefix={<PhoneOutlined />} 
+                placeholder="081234567890"
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Alamat"
+              name="address"
+            >
+              <Input.TextArea 
+                prefix={<HomeOutlined />} 
+                placeholder="Jl. Merdeka No. 123, Jakarta"
+                rows={3}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Foto Profile"
+            >
+              <Upload
+                showUploadList={false}
+                beforeUpload={handleImageChange}
+                accept="image/*"
+                maxCount={1}
+              >
+                <Button icon={<UploadOutlined />}>
+                  {imageFile ? 'Ganti Foto' : 'Upload Foto'}
+                </Button>
+              </Upload>
+              {imageFile && (
+                <p className="text-sm text-gray-500 mt-2">
+                  Foto baru akan diupload saat menyimpan
+                </p>
+              )}
+            </Form.Item>
+
             <Form.Item>
               <div className="flex gap-3">
                 <Button 
@@ -212,63 +250,18 @@ function ProfilePage() {
             </Form.Item>
           </Form>
 
-          <Divider>Ganti Password</Divider>
+          <Divider>Ganti Password (Opsional)</Divider>
 
-          <Form
-            name="changePassword"
-            layout="vertical"
-            size="large"
-            onFinish={(values) => {
-              // TODO: Implement change password
-              message.info('Fitur ganti password akan segera tersedia');
-            }}
+          <Form.Item
+            label="Password Baru"
+            name="password"
+            tooltip="Kosongkan jika tidak ingin mengubah password"
+            rules={[
+              { min: 6, message: 'Password minimal 6 karakter!' }
+            ]}
           >
-            <Form.Item
-              label="Password Lama"
-              name="oldPassword"
-              rules={[{ required: true, message: 'Password lama wajib diisi!' }]}
-            >
-              <Input.Password placeholder="Password Lama" />
-            </Form.Item>
-
-            <Form.Item
-              label="Password Baru"
-              name="newPassword"
-              rules={[
-                { required: true, message: 'Password baru wajib diisi!' },
-                { min: 6, message: 'Password minimal 6 karakter!' }
-              ]}
-              hasFeedback
-            >
-              <Input.Password placeholder="Password Baru" />
-            </Form.Item>
-
-            <Form.Item
-              label="Konfirmasi Password Baru"
-              name="confirmNewPassword"
-              dependencies={['newPassword']}
-              hasFeedback
-              rules={[
-                { required: true, message: 'Konfirmasi password wajib diisi!' },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue('newPassword') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(new Error('Password tidak cocok!'));
-                  },
-                }),
-              ]}
-            >
-              <Input.Password placeholder="Konfirmasi Password Baru" />
-            </Form.Item>
-
-            <Form.Item>
-              <Button type="primary" htmlType="submit" block>
-                Ganti Password
-              </Button>
-            </Form.Item>
-          </Form>
+            <Input.Password placeholder="Password Baru (opsional)" />
+          </Form.Item>
         </Card>
       </div>
     </div>

@@ -24,7 +24,13 @@
  *    - Update user data di localStorage
  *    - Return user data
  * 
- * 6. Implement helper functions:
+ * 6. Implement updateProfile function:
+ *    - PUT /api/auth/profile dengan FormData (multipart/form-data)
+ *    - Support fields: name, phone, address, password (optional), image (optional)
+ *    - Update user data di localStorage
+ *    - Return updated user data
+ * 
+ * 7. Implement helper functions:
  *    - isAuthenticated() - Check if token exists
  *    - getCurrentUser() - Get user from localStorage
  * 
@@ -63,6 +69,14 @@
 // TODO: isAuthenticated helper
 // export const isAuthenticated = () => {
 //   // Check if token exists in localStorage
+// };
+
+// TODO: Update Profile function
+// export const updateProfile = async (formData) => {
+//   // PUT /api/auth/profile dengan FormData
+//   // Headers: Content-Type: multipart/form-data
+//   // Update user data di localStorage
+//   // Return updated user data
 // };
 
 // TODO: getCurrentUser helper

@@ -98,7 +98,7 @@ export const formatAIResponse = async (response) => {
         }
 
         // If product is missing critical fields, try to fetch full details
-        const needsFetch = !product.imageUrl || product.stock === undefined;
+        const needsFetch = !product.image && !product.imageUrl || product.stock === undefined;
         
         if (needsFetch) {
           const fullProduct = await fetchProductDetails(productId);
@@ -110,7 +110,7 @@ export const formatAIResponse = async (response) => {
               price: fullProduct.price || product.price,
               category: fullProduct.category || product.category,
               description: fullProduct.description || product.description || '',
-              imageUrl: fullProduct.imageUrl || product.imageUrl || '/placeholder.webp',
+              image: fullProduct.image || fullProduct.imageUrl || product.image || product.imageUrl || '/placeholder.webp',
               stock: fullProduct.stock !== undefined ? fullProduct.stock : (product.stock !== undefined ? product.stock : 100),
               manufacturer: fullProduct.manufacturer || product.manufacturer || '',
               isActive: fullProduct.isActive !== undefined ? fullProduct.isActive : true
@@ -126,7 +126,7 @@ export const formatAIResponse = async (response) => {
           price: product.price,
           category: product.category,
           description: product.description || '',
-          imageUrl: product.imageUrl || product.image || '/placeholder.webp',
+          image: product.image || product.imageUrl || '/placeholder.webp',
           stock: product.stock !== undefined ? product.stock : 100, // Default stock
           manufacturer: product.manufacturer || '',
           isActive: product.isActive !== undefined ? product.isActive : true

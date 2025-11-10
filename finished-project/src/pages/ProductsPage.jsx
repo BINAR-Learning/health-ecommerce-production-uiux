@@ -172,7 +172,7 @@ function ProductsPage() {
                       <div className="absolute inset-0 flex items-center justify-center p-4">
                         <img
                           alt={product.name}
-                          src={product.imageUrl || '/placeholder.webp'}
+                          src={product.image || '/placeholder.webp'}
                           className="max-w-full max-h-full w-auto h-auto object-contain"
                           style={{ maxWidth: '100%', maxHeight: '100%' }}
                           onError={(e) => {
