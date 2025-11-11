@@ -14,7 +14,7 @@ function ProductSkeleton() {
       {/* TODO: Price skeleton */}
       
       <div className="text-gray-400 mt-4">
-        ⚠️ TODO: Complete skeleton layout
+         TODO: Complete skeleton layout
       </div>
     </div>
   );

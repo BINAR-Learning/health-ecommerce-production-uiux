@@ -54,7 +54,7 @@ function ProductDetailPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12 text-center">
         <p className="text-red-500 text-lg mb-4">
-          ❌ Produk tidak ditemukan
+           Produk tidak ditemukan
         </p>
         <Button onClick={() => navigate('/products')}>
           Kembali ke Katalog

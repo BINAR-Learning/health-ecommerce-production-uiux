@@ -91,7 +91,7 @@ function Navbar() {
     <Header className="!flex items-center justify-between !px-4 md:!px-6 lg:!px-8 !bg-white !shadow-lg !sticky !top-0 !z-50 !h-16 !leading-none border-b border-gray-100">
       <div className="flex items-center gap-2">
         <Link to="/" className="flex items-center gap-2 text-base sm:text-lg md:text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors no-underline">
-          <span className="text-xl sm:text-2xl">🏥</span>
+          <span className="text-xl sm:text-2xl"></span>
           <span className="hidden sm:inline">Health E-Commerce</span>
           <span className="sm:hidden">Health</span>
         </Link>

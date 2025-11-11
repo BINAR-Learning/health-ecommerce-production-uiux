@@ -1,21 +1,21 @@
-# 🔐 Authentication System - Complete Guide
+#  Authentication System - Complete Guide
 
-## ✅ **SISTEM AUTHENTICATION SUDAH DIBUAT!**
+##  **SISTEM AUTHENTICATION SUDAH DIBUAT!**
 
-### 📋 **What's Included:**
+###  **What's Included:**
 
-1. ✅ **Login Page** (`/login`)
-2. ✅ **Register Page** (`/register`)
-3. ✅ **Profile Page** (`/profile`)
-4. ✅ **Protected Routes** (Cart, Checkout, Profile)
-5. ✅ **AuthContext** (Global auth state)
-6. ✅ **Auto redirect** ke login jika belum login
-7. ✅ **User menu** di Navbar (Avatar, Profile, Logout)
-8. ✅ **Token management** (localStorage + Bearer token)
+1.  **Login Page** (`/login`)
+2.  **Register Page** (`/register`)
+3.  **Profile Page** (`/profile`)
+4.  **Protected Routes** (Cart, Checkout, Profile)
+5.  **AuthContext** (Global auth state)
+6.  **Auto redirect** ke login jika belum login
+7.  **User menu** di Navbar (Avatar, Profile, Logout)
+8.  **Token management** (localStorage + Bearer token)
 
 ---
 
-## 🎯 **Flow Authentication:**
+##  **Flow Authentication:**
 
 ### **1. Registration Flow:**
 
@@ -65,24 +65,24 @@ Redirect to Home → Show success message
 ```
 src/
 ├── context/
-│   └── AuthContext.jsx          # ✅ Auth state management
+│   └── AuthContext.jsx          #  Auth state management
 │
 ├── services/
-│   └── authService.js           # ✅ API calls (login, register, profile)
+│   └── authService.js           #  API calls (login, register, profile)
 │
 ├── components/
-│   ├── Navbar.jsx               # ✅ Updated with user menu
-│   └── ProtectedRoute.jsx       # ✅ Protect routes yang butuh auth
+│   ├── Navbar.jsx               #  Updated with user menu
+│   └── ProtectedRoute.jsx       #  Protect routes yang butuh auth
 │
 └── pages/
-    ├── LoginPage.jsx            # ✅ Login form
-    ├── RegisterPage.jsx         # ✅ Register form
-    └── ProfilePage.jsx          # ✅ User profile & edit
+    ├── LoginPage.jsx            #  Login form
+    ├── RegisterPage.jsx         #  Register form
+    └── ProfilePage.jsx          #  User profile & edit
 ```
 
 ---
 
-## 🔧 **API Endpoints (Backend):**
+##  **API Endpoints (Backend):**
 
 ### **POST /api/auth/register**
 
@@ -159,7 +159,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ---
 
-## 💾 **LocalStorage Structure:**
+##  **LocalStorage Structure:**
 
 ```javascript
 // Token
@@ -173,7 +173,7 @@ localStorage.getItem('user_data')
 
 ---
 
-## 🔐 **Token Management:**
+##  **Token Management:**
 
 ### **HTTP Client (api.js):**
 
@@ -203,7 +203,7 @@ apiClient.interceptors.response.use(
 
 ---
 
-## 🎨 **UI Components:**
+##  **UI Components:**
 
 ### **1. Login Page**
 
@@ -254,7 +254,7 @@ apiClient.interceptors.response.use(
 
 ---
 
-## 🛡️ **Protected Routes:**
+##  **Protected Routes:**
 
 **Routes yang memerlukan authentication:**
 - `/cart` - Shopping Cart
@@ -275,7 +275,7 @@ Jika user belum login, akan di-redirect ke `/login` dengan menyimpan URL yang in
 
 ---
 
-## 🧪 **Testing:**
+##  **Testing:**
 
 ### **Test Case 1: Register**
 1. Go to `/register`
@@ -311,7 +311,7 @@ Jika user belum login, akan di-redirect ke `/login` dengan menyimpan URL yang in
 
 ---
 
-## ⚙️ **Environment Variables:**
+##  **Environment Variables:**
 
 **Backend (.env):**
 ```env
@@ -326,7 +326,7 @@ VITE_API_URL=http://localhost:5000
 
 ---
 
-## 🚀 **Quick Start:**
+##  **Quick Start:**
 
 ### **1. Start Backend:**
 ```bash
@@ -349,7 +349,7 @@ npm run dev
 
 ---
 
-## 📝 **Common Issues & Solutions:**
+##  **Common Issues & Solutions:**
 
 ### **Issue 1: Token not sent to backend**
 **Solution:** Check api.js interceptor sudah benar
@@ -365,16 +365,16 @@ npm run dev
 
 ---
 
-## ✅ **Summary:**
+##  **Summary:**
 
-✅ **Login & Register** - Complete UI dan backend integration  
-✅ **Protected Routes** - Auto redirect jika belum login  
-✅ **Token Management** - Auto-attach ke headers  
-✅ **User Menu** - Avatar, Profile, Logout  
-✅ **Profile Page** - View dan edit profile  
-✅ **Error Handling** - Clear messages untuk user  
+ **Login & Register** - Complete UI dan backend integration  
+ **Protected Routes** - Auto redirect jika belum login  
+ **Token Management** - Auto-attach ke headers  
+ **User Menu** - Avatar, Profile, Logout  
+ **Profile Page** - View dan edit profile  
+ **Error Handling** - Clear messages untuk user  
 
-**AUTHENTICATION SYSTEM IS READY TO USE!** 🎉
+**AUTHENTICATION SYSTEM IS READY TO USE!** 
 
 ---
 

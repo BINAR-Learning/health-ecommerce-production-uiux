@@ -1,16 +1,16 @@
-# 🏗️ Architecture Overview - Health E-Commerce
+#  Architecture Overview - Health E-Commerce
 
-## 📋 **Project Structure**
+##  **Project Structure**
 
 Proyek ini menggunakan **Full Stack Architecture** dengan pemisahan yang jelas antara Frontend dan Backend.
 
 ---
 
-## 🎨 **Frontend (React)**
+##  **Frontend (React)**
 
 **Location:** `health-ecommerce-production-uiux/finished-project/`
 
-### **⚠️ PENTING: Frontend TIDAK Membuat API!**
+### ** PENTING: Frontend TIDAK Membuat API!**
 
 Frontend hanya melakukan **HTTP requests** ke backend API. Tidak ada API server di React!
 
@@ -18,7 +18,7 @@ Frontend hanya melakukan **HTTP requests** ke backend API. Tidak ada API server 
 
 ```
 src/
-├── services/          # ⚠️ BUKAN API Server!
+├── services/          #  BUKAN API Server!
 │   ├── api.js         # HTTP Client (axios) untuk call backend
 │   ├── paymentService.js  # Service layer untuk call payment API
 │   └── aiService.js   # Service layer untuk call AI API
@@ -30,9 +30,9 @@ src/
 ### **Services Folder:**
 
 **Maksud "services" di sini:**
-- ✅ **Service Layer** - Abstraksi untuk HTTP calls
-- ✅ **HTTP Client** - Menggunakan axios untuk call backend
-- ❌ **BUKAN API Server** - Tidak ada endpoint yang dibuat di sini!
+-  **Service Layer** - Abstraksi untuk HTTP calls
+-  **HTTP Client** - Menggunakan axios untuk call backend
+-  **BUKAN API Server** - Tidak ada endpoint yang dibuat di sini!
 
 **Contoh:**
 ```javascript
@@ -65,7 +65,7 @@ Midtrans API
 
 ---
 
-## 🔧 **Backend (Node.js/Express)**
+##  **Backend (Node.js/Express)**
 
 **Location:** `health-ecommerce-external-integration/finished-project/`
 
@@ -101,7 +101,7 @@ routes/
 
 ---
 
-## 🔄 **Data Flow:**
+##  **Data Flow:**
 
 ### **1. Products Flow:**
 ```
@@ -164,7 +164,7 @@ React displays response
 
 ---
 
-## ✅ **Summary:**
+##  **Summary:**
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
@@ -176,16 +176,16 @@ React displays response
 
 ---
 
-## 🎯 **Key Points:**
+##  **Key Points:**
 
-1. ✅ **Frontend = Client** - Hanya melakukan HTTP requests
-2. ✅ **Backend = Server** - Membuat API endpoints
-3. ✅ **Services di Frontend** - Abstraksi HTTP calls, bukan API
-4. ✅ **Routes di Backend** - Inilah yang membuat API!
+1.  **Frontend = Client** - Hanya melakukan HTTP requests
+2.  **Backend = Server** - Membuat API endpoints
+3.  **Services di Frontend** - Abstraksi HTTP calls, bukan API
+4.  **Routes di Backend** - Inilah yang membuat API!
 
 ---
 
-## 📚 **Technology Stack:**
+##  **Technology Stack:**
 
 **Frontend:**
 - React 18

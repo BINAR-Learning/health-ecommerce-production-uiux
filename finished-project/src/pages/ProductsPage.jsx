@@ -130,7 +130,7 @@ function ProductsPage() {
       {error && (
         <div className="text-center py-12">
           <p className="text-red-500 text-lg mb-4">
-            ❌ Gagal memuat produk. Pastikan backend berjalan di http://localhost:5000
+             Gagal memuat produk. Pastikan backend berjalan di http://localhost:5000
           </p>
           <Button onClick={() => window.location.reload()}>Coba Lagi</Button>
         </div>

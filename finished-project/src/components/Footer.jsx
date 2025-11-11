@@ -15,7 +15,7 @@ function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🏥</span>
+              <span className="text-2xl"></span>
               <h3 className="text-xl font-bold text-white">Health E-Commerce</h3>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed mb-4 max-w-md">
@@ -76,7 +76,7 @@ function Footer() {
                 <span>Midtrans Payment</span>
               </li>
               <li className="flex items-center gap-2 text-sm text-gray-400">
-                <span className="text-blue-400">🏥</span>
+                <span className="text-blue-400"></span>
                 <span>Kemenkes API</span>
               </li>
             </ul>

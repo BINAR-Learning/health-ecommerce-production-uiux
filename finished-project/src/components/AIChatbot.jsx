@@ -15,7 +15,7 @@ function AIChatbot({ visible, onClose }) {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: 'Halo! Saya adalah asisten AI Health E-Commerce. Ceritakan keluhan atau kebutuhan kesehatan Anda, dan saya akan merekomendasikan produk yang tepat! 😊'
+      content: 'Halo! Saya adalah asisten AI Health E-Commerce. Ceritakan keluhan atau kebutuhan kesehatan Anda, dan saya akan merekomendasikan produk yang tepat! '
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
@@ -56,7 +56,7 @@ function AIChatbot({ visible, onClose }) {
     });
 
     addToCart(product);
-    message.success(`✅ ${product.name} ditambahkan ke keranjang!`);
+    message.success(` ${product.name} ditambahkan ke keranjang!`);
   };
 
   const handleSend = async () => {

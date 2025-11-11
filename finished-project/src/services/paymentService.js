@@ -61,7 +61,7 @@ export const createPayment = async (orderData) => {
     const response = await apiClient.post('/api/external/payment/create', payload);
 
     // Comprehensive logging
-    console.log('📥 Payment API Full Response:', {
+    console.log(' Payment API Full Response:', {
       status: response.status,
       statusText: response.statusText,
       dataType: typeof response.data,
@@ -79,23 +79,23 @@ export const createPayment = async (orderData) => {
     if (response.data?.success && response.data?.data) {
       paymentUrl = response.data.data.paymentUrl || response.data.data.redirectUrl;
       token = response.data.data.token;
-      console.log('✅ Structure 1: success + data field');
+      console.log(' Structure 1: success + data field');
     }
     // Structure 2: { success: true, paymentUrl, token } (flat structure)
     else if (response.data?.success) {
       paymentUrl = response.data.paymentUrl || response.data.redirectUrl;
       token = response.data.token;
-      console.log('✅ Structure 2: flat structure');
+      console.log(' Structure 2: flat structure');
     }
     // Structure 3: Direct response { token, redirect_url }
     else if (response.data?.token || response.data?.redirect_url) {
       paymentUrl = response.data.redirect_url || response.data.redirectUrl;
       token = response.data.token;
-      console.log('✅ Structure 3: direct Midtrans response');
+      console.log(' Structure 3: direct Midtrans response');
     }
 
     if (paymentUrl) {
-      console.log('✅ Payment URL found:', paymentUrl);
+      console.log(' Payment URL found:', paymentUrl);
       return {
         success: true,
         paymentUrl,
@@ -104,7 +104,7 @@ export const createPayment = async (orderData) => {
     }
 
     // If we reach here, payment URL not found in any structure
-    console.error('❌ Payment URL not found in response:', response.data);
+    console.error(' Payment URL not found in response:', response.data);
     throw new Error('Payment URL not found in response. Backend may have returned unexpected format.');
   } catch (error) {
     console.error('Payment Service Error:', error);

@@ -14,7 +14,7 @@ function OrderSuccessPage() {
 
   useEffect(() => {
     // Log redirect info
-    console.log('📍 Redirected from Midtrans:', {
+    console.log(' Redirected from Midtrans:', {
       orderId,
       transactionStatus,
       statusCode,
@@ -28,7 +28,7 @@ function OrderSuccessPage() {
       
       // Optionally clear cart (payment confirmed)
       // Note: Better to do this via webhook in real production
-      console.log('✅ Payment confirmed, order can be processed');
+      console.log(' Payment confirmed, order can be processed');
     }
   }, [orderId, transactionStatus, statusCode, searchParams]);
 
@@ -83,23 +83,23 @@ function OrderSuccessPage() {
 
         <div className="bg-gradient-to-r from-blue-50 to-green-50 p-6 rounded-xl max-w-md mx-auto">
           <h3 className="font-semibold text-gray-800 mb-4 text-center">
-            {isPending ? "⏳ Selanjutnya:" : "✅ Selanjutnya:"}
+            {isPending ? " Selanjutnya:" : " Selanjutnya:"}
           </h3>
           <div className="space-y-3">
             <p className="text-sm text-gray-700 flex items-start gap-2">
-              <span className="text-blue-500 font-bold">📧</span>
+              <span className="text-blue-500 font-bold"></span>
               <span>Konfirmasi pesanan telah dikirim ke email Anda</span>
             </p>
             <p className="text-sm text-gray-700 flex items-start gap-2">
-              <span className="text-blue-500 font-bold">📦</span>
+              <span className="text-blue-500 font-bold"></span>
               <span>Estimasi pengiriman: 2-3 hari kerja</span>
             </p>
             <p className="text-sm text-gray-700 flex items-start gap-2">
-              <span className="text-blue-500 font-bold">📬</span>
+              <span className="text-blue-500 font-bold"></span>
               <span>Nomor resi akan dikirimkan via email</span>
             </p>
             <p className="text-sm text-gray-700 flex items-start gap-2">
-              <span className="text-blue-500 font-bold">💬</span>
+              <span className="text-blue-500 font-bold"></span>
               <span>Hubungi customer service jika ada pertanyaan</span>
             </p>
           </div>
@@ -108,7 +108,7 @@ function OrderSuccessPage() {
         {isPending && (
           <div className="mt-6 text-center">
             <p className="text-xs text-gray-500">
-              💡 Tip: Beberapa metode pembayaran memerlukan waktu konfirmasi. 
+               Tip: Beberapa metode pembayaran memerlukan waktu konfirmasi. 
               Silakan cek email Anda untuk update status.
             </p>
           </div>

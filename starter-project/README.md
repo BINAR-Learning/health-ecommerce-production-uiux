@@ -1,4 +1,4 @@
-# 📝 Health E-Commerce: Frontend Starter Project
+#  Health E-Commerce: Frontend Starter Project
 
 > **Starter Template untuk Practice - Build dari Scratch!**
 
@@ -10,15 +10,15 @@
 
 ---
 
-## 🎯 Tujuan Starter Project
+##  Tujuan Starter Project
 
 **Ini adalah template untuk practice!**
 
-- ✅ Basic structure sudah ada
-- ✅ TODO comments untuk guidance
-- ✅ Example code snippets
-- ✅ Step-by-step instructions
-- ⚠️ **Implementasi belum lengkap** - Kamu yang akan build!
+-  Basic structure sudah ada
+-  TODO comments untuk guidance
+-  Example code snippets
+-  Step-by-step instructions
+-  **Implementasi belum lengkap** - Kamu yang akan build!
 
 **Gunakan finished-project sebagai reference:**
 - `../finished-project/` - Complete implementation
@@ -27,41 +27,41 @@
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 starter-project/
-├── README.md                    # 📖 Dokumentasi ini
+├── README.md                    #  Dokumentasi ini
 ├── package.json                 # Dependencies (sudah ada)
-├── vite.config.js              # ✅ Vite config
-├── tailwind.config.js          # ✅ Tailwind config
+├── vite.config.js              #  Vite config
+├── tailwind.config.js          #  Tailwind config
 │
 ├── src/
 │   ├── components/
-│   │   ├── ErrorBoundary.jsx   # ✅ Basic error boundary
-│   │   └── ProductSkeleton.jsx # ✅ Loading skeleton
+│   │   ├── ErrorBoundary.jsx   #  Basic error boundary
+│   │   └── ProductSkeleton.jsx #  Loading skeleton
 │   │
 │   ├── context/
-│   │   ├── CartContext.jsx     # ⚠️ TODO: Cart management
-│   │   └── ThemeContext.jsx    # ⚠️ TODO: Dark mode
+│   │   ├── CartContext.jsx     #  TODO: Cart management
+│   │   └── ThemeContext.jsx    #  TODO: Dark mode
 │   │
 │   ├── services/
-│   │   ├── api.js              # ✅ Axios base config
-│   │   ├── aiService.js        # ⚠️ TODO: AI integration
-│   │   └── paymentService.js   # ⚠️ TODO: Payment integration
+│   │   ├── api.js              #  Axios base config
+│   │   ├── aiService.js        #  TODO: AI integration
+│   │   └── paymentService.js   #  TODO: Payment integration
 │   │
-│   └── main.jsx                # ⚠️ TODO: Setup providers
+│   └── main.jsx                #  TODO: Setup providers
 │
-└── index.html                   # ✅ HTML template
+└── index.html                   #  HTML template
 ```
 
 **Legend:**
-- ✅ = Sudah ada (basic structure)
-- ⚠️ = Perlu diimplementasikan (TODO)
+-  = Sudah ada (basic structure)
+-  = Perlu diimplementasikan (TODO)
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Step 1: Install Dependencies
 
@@ -93,7 +93,7 @@ npm run dev
 
 ---
 
-## 📋 TODO Checklist
+##  TODO Checklist
 
 ### Phase 1: Basic Setup
 
@@ -168,7 +168,7 @@ npm run dev
 
 ---
 
-## 🎓 Learning Path
+##  Learning Path
 
 ### Step 1: Read the Code
 
@@ -212,7 +212,7 @@ npm run dev
 
 ---
 
-## 💡 Tips & Tricks
+##  Tips & Tricks
 
 ### 1. Use Finished Project as Reference
 
@@ -257,29 +257,29 @@ import { useQuery } from '@tanstack/react-query';
 
 ---
 
-## 🐛 Common Issues
+##  Common Issues
 
-### ❌ "Cannot find module"
+###  "Cannot find module"
 
 **Solution:**
 ```bash
 npm install
 ```
 
-### ❌ "CORS error"
+###  "CORS error"
 
 **Solution:**
 - Check backend CORS configured
 - Check API URL di `.env`
 
-### ❌ "API connection failed"
+###  "API connection failed"
 
 **Solution:**
 - Check backend running
 - Check API URL correct
 - Check network tab untuk errors
 
-### ❌ "Dark mode not working"
+###  "Dark mode not working"
 
 **Solution:**
 - Check ThemeContext implementation
@@ -288,7 +288,7 @@ npm install
 
 ---
 
-## 📚 Resources
+##  Resources
 
 ### Documentation
 - **Finished Project:** `../finished-project/README.md`
@@ -309,7 +309,7 @@ npm install
 
 ---
 
-## ✅ Completion Checklist
+##  Completion Checklist
 
 Setelah selesai, pastikan:
 
@@ -325,7 +325,7 @@ Setelah selesai, pastikan:
 
 ---
 
-## 🎉 Next Steps
+##  Next Steps
 
 Setelah starter project selesai:
 
@@ -352,13 +352,13 @@ Setelah starter project selesai:
 
 ---
 
-**Happy Coding! 🚀**
+**Happy Coding! **
 
-**Remember:** Practice makes perfect! Don't give up! 💪
+**Remember:** Practice makes perfect! Don't give up! 
 
 ---
 
-**📁 Repository Info:**
+** Repository Info:**
 
 - **Name:** `health-ecommerce-production-uiux/starter-project`
 - **Type:** Starter Template (untuk practice)

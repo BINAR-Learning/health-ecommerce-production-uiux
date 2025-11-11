@@ -101,7 +101,7 @@ function CheckoutPage() {
 
       if (paymentResponse && paymentResponse.success && paymentResponse.paymentUrl) {
         // Open Midtrans payment page in same tab (will redirect back via callbacks)
-        console.log('✅ Redirecting to payment URL:', paymentResponse.paymentUrl);
+        console.log(' Redirecting to payment URL:', paymentResponse.paymentUrl);
         
         // Save order info to localStorage (for after payment redirect)
         localStorage.setItem('pending_order', JSON.stringify({
@@ -112,7 +112,7 @@ function CheckoutPage() {
         }));
         
         message.success({
-          content: '🔄 Membuka halaman pembayaran Midtrans...',
+          content: ' Membuka halaman pembayaran Midtrans...',
           duration: 2,
         });
         
@@ -124,7 +124,7 @@ function CheckoutPage() {
         window.location.href = paymentResponse.paymentUrl;
       } else {
         // Payment URL not found
-        console.error('❌ Payment URL missing in response:', paymentResponse);
+        console.error(' Payment URL missing in response:', paymentResponse);
         message.error('Payment URL tidak ditemukan. Silakan coba lagi atau hubungi customer service.');
       }
     } catch (error) {

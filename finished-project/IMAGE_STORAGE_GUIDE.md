@@ -1,6 +1,6 @@
-# 📸 Image Storage Guide
+#  Image Storage Guide
 
-## 📍 **Dimana Menyimpan Image Assets?**
+##  **Dimana Menyimpan Image Assets?**
 
 ### **1. Static Images (Frontend - Public Folder)**
 
@@ -30,10 +30,10 @@ public/
 ```
 
 **Benefits:**
-- ✅ Fast loading (direct access)
-- ✅ No build processing needed
-- ✅ Easy to reference
-- ✅ Cached by browser
+-  Fast loading (direct access)
+-  No build processing needed
+-  Easy to reference
+-  Cached by browser
 
 ---
 
@@ -100,14 +100,14 @@ app.use('/uploads', express.static('uploads'));
 ```
 
 **Pros:**
-- ✅ Simple setup
-- ✅ No external dependencies
-- ✅ Good for development
+-  Simple setup
+-  No external dependencies
+-  Good for development
 
 **Cons:**
-- ❌ Not scalable for production
-- ❌ Files lost if server restarts (unless persistent volume)
-- ❌ No CDN benefits
+-  Not scalable for production
+-  Files lost if server restarts (unless persistent volume)
+-  No CDN benefits
 
 ---
 
@@ -172,15 +172,15 @@ const upload = multer({
 ```
 
 **Pros:**
-- ✅ Scalable
-- ✅ CDN support
-- ✅ Image transformations
-- ✅ Backup & recovery
-- ✅ No server storage needed
+-  Scalable
+-  CDN support
+-  Image transformations
+-  Backup & recovery
+-  No server storage needed
 
 **Cons:**
-- ❌ Costs money (but free tier available)
-- ❌ Requires setup
+-  Costs money (but free tier available)
+-  Requires setup
 
 ---
 
@@ -206,26 +206,26 @@ const products = [
 
 ---
 
-## 📋 **Recommendation Summary**
+##  **Recommendation Summary**
 
 ### **For Your Project:**
 
 **Current (Development):**
 ```
-✅ Static assets → public/ folder
-✅ Product placeholders → public/placeholder.webp
+ Static assets → public/ folder
+ Product placeholders → public/placeholder.webp
 ```
 
 **For Production:**
 ```
-✅ Product images → Cloudinary or AWS S3
-✅ User avatars → Cloudinary
-✅ Static assets → Stay in public/ folder
+ Product images → Cloudinary or AWS S3
+ User avatars → Cloudinary
+ Static assets → Stay in public/ folder
 ```
 
 ---
 
-## 🔧 **Quick Implementation (Cloudinary)**
+##  **Quick Implementation (Cloudinary)**
 
 ### **1. Signup & Get Credentials**
 - Go to [Cloudinary](https://cloudinary.com/)
@@ -292,15 +292,15 @@ const handleImageUpload = async (file) => {
 
 ---
 
-## ✅ **Kesimpulan**
+##  **Kesimpulan**
 
 **Untuk sekarang:**
-- Static images → `public/` folder ✅
-- Product images → Gunakan `placeholder.webp` atau external URLs ✅
+- Static images → `public/` folder 
+- Product images → Gunakan `placeholder.webp` atau external URLs 
 
 **Untuk production:**
-- Implement Cloudinary atau AWS S3 untuk product images 🚀
-- Keep static assets di `public/` folder ✅
+- Implement Cloudinary atau AWS S3 untuk product images 
+- Keep static assets di `public/` folder 
 
 ---
 
